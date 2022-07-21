@@ -1,14 +1,18 @@
 
-from cgi import test
+#  Importa as bibliotecas necessárias
+
 import pandas as pd
 
 from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
+# Link do dataset
 uri = 'https://gist.githubusercontent.com/guilhermesilveira/2d2efa37d66b6c84a722ea627a897ced/raw/10968b997d885cbded1c92938c7a9912ba41c615/tracking.csv'
+# Faz a leitura do dataset
 dados = pd.read_csv(uri)
 
+# Dict para renomear as colunas
 mapa = {
     'home': 'principal',
     'how_it_works': 'como_funciona',
@@ -16,8 +20,10 @@ mapa = {
     'bought': 'comprou'
 }
 
+# Renomeia as colunas
 dados.rename(columns=mapa, inplace=True)
 
+# Separa os dados
 x = dados[["principal", "como_funciona", "contato"]]
 y = dados[["comprou"]]
 
