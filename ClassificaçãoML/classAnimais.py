@@ -1,5 +1,5 @@
 
-from sklearn.svm import linearSVC
+from sklearn.svm import LinearSVC
 
 # Features
 # 1. Pelo longo
@@ -15,3 +15,9 @@ cachorro2 = [1, 0, 1]
 cachorro3 = [1, 1, 1]
 
 dados = [porco1, porco2, porco3, cachorro1, cachorro2, cachorro3]
+
+classes = [1, 1, 1, 0, 0, 0]
+
+model = LinearSVC()
+
+model.fit(dados, classes)
