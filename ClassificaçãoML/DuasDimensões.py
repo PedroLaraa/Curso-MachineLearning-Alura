@@ -26,6 +26,7 @@ troca = {
     0 : 1,
     1 : 0
 }
+
 dados['finalizado'] = dados.nao_finalizado.map(troca)
 
 print(dados.head())
