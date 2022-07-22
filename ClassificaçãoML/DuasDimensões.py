@@ -10,6 +10,8 @@ from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
+from sklearn.preprocessing import StandardScaler
+
 uri = "https://gist.githubusercontent.com/guilhermesilveira/1b7d5475863c15f484ac495bd70975cf/raw/16aff7a0aee67e7c100a2a48b676a2d2d142f646/projects.csv"
 
 dados = pd.read_csv(uri)
@@ -34,18 +36,26 @@ print(dados.head())
 x = dados[['horas_esperadas', 'preco']]
 y = dados['finalizado']
 
-SEED = 20
+from sklearn.svm import SVC
 
-treino_x, teste_x, treino_y, teste_y = train_test_split(x, y, random_state = SEED, test_size = 0.25, stratify = y)
+SEED = 5
+np.random.seed(SEED)
+treino_x, teste_x, treino_y, teste_y = train_test_split(x, y, test_size = 0.25, stratify = y)
 print("Treinaremos com %d elementos e testaremos com %d elementos" % (len(treino_x), len(teste_x)))
 
-modelo = LinearSVC()
+scaler = StandardScaler()
+scaler.fit(treino_x)
+
+treino_x = scaler.transform(treino_x)
+teste_x = scaler.transform(teste_x)
+
+modelo = SVC(gamma='auto')
 modelo.fit(treino_x, treino_y)
 previsoes = modelo.predict(teste_x)
 
 previsoes_de_base = np.ones(540)
 
-acuracia = accuracy_score(teste_y, previsoes_de_base) * 100
+acuracia = accuracy_score(teste_y, previsoes) * 100
 print("A acurácia do baseline foi %.2f%%" % acuracia)
 
 x_min = teste_x.horas_esperadas.min()
