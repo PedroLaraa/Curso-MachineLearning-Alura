@@ -40,14 +40,14 @@ from sklearn.svm import SVC
 
 SEED = 5
 np.random.seed(SEED)
-treino_x, teste_x, treino_y, teste_y = train_test_split(x, y, test_size = 0.25, stratify = y)
-print("Treinaremos com %d elementos e testaremos com %d elementos" % (len(treino_x), len(teste_x)))
+raw_treino_x, raw_teste_x, treino_y, teste_y = train_test_split(x, y, test_size = 0.25, stratify = y)
+print("Treinaremos com %d elementos e testaremos com %d elementos" % (len(raw_treino_x), len(raw_teste_x)))
 
 scaler = StandardScaler()
-scaler.fit(treino_x)
+scaler.fit(raw_treino_x)
 
-treino_x = scaler.transform(treino_x)
-teste_x = scaler.transform(teste_x)
+treino_x = scaler.transform(raw_treino_x)
+teste_x = scaler.transform(raw_teste_x)
 
 modelo = SVC(gamma='auto')
 modelo.fit(treino_x, treino_y)
@@ -58,12 +58,13 @@ previsoes_de_base = np.ones(540)
 acuracia = accuracy_score(teste_y, previsoes) * 100
 print("A acurácia do baseline foi %.2f%%" % acuracia)
 
-x_min = teste_x.horas_esperadas.min()
-x_max = teste_x.horas_esperadas.max()
-y_min = teste_x.preco.min()
-y_max = teste_x.preco.max()
+data_x = teste_x[:, 0]
+data_y = teste_x[:, 1]
 
-print(x_min, x_max, y_min, y_max)
+x_min = data_x.min()
+x_max = data_x.max()
+y_min = data_y.min()
+y_max = data_y.max()
 
 pixel = 100
 
@@ -79,6 +80,6 @@ Z = modelo.predict(pontos)
 Z = Z.reshape(xx.shape)
 
 plt.contourf(xx, yy, Z ,alpha=0.4)
-plt.scatter(teste_x.horas_esperadas, teste_x.preco, c=teste_y, s=1)
+plt.scatter(data_x, data_y, c=teste_y, s=1)
 
 plt.show()
