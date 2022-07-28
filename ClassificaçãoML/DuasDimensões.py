@@ -82,4 +82,5 @@ Z = Z.reshape(xx.shape)
 plt.contourf(xx, yy, Z ,alpha=0.4)
 plt.scatter(data_x, data_y, c=teste_y, s=1)
 
+# EXIBE O GRÁFICO COM A LINHA
 plt.show()
