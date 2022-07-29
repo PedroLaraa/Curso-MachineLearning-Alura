@@ -58,15 +58,17 @@ scaler.fit(raw_treino_x)
 
 treino_x = scaler.transform(raw_treino_x)
 teste_x = scaler.transform(raw_teste_x)
+
 print("Treinaremos com %d elementos e testaremos com %d elementos" % (len(treino_x), len(teste_x)))
 
 modelo = DecisionTreeClassifier()
-modelo.fit(raw_treino_x, treino_y)
-previsoes = modelo.predict(raw_teste_x)
+modelo.fit(treino_x, treino_y)
+previsoes = modelo.predict(teste_x)
 
 acuracia = accuracy_score(teste_y, previsoes) * 100
 print("A acurácia foi %.2f%%" % acuracia)
 
 dot_data = export_graphviz(modelo, out_file=None)
-
 grafico = graphviz.Source(dot_data)
+
+print(graphviz.Source(dot_data))
