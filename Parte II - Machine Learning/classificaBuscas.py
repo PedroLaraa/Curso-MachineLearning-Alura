@@ -1,5 +1,8 @@
-from dados import carregar_buscas
+from tkinter import Y
+import pandas as pd
 
-X,Y = carregar_buscas()
-print(X[0])
-print(Y[0])
+dados = pd.read_csv('cursos.csv')
+print(dados.head())
+
+X = dados[['home','busca','logado']]
+Y = dados['comprou']
