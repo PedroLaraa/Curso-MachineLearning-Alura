@@ -1,13 +1,26 @@
 import pandas as pd
+
 from sklearn.ensemble import RandomForestClassifier
+
 from sklearn.model_selection import train_test_split
+
 from numpy import random
+
 from sklearn.dummy import DummyClassifier
+
 import seaborn as sns
+
 import matplotlib.pyplot as plt
+
 from sklearn.preprocessing import StandardScaler
+
 from sklearn.metrics import confusion_matrix
+
 from sklearn.feature_selection import RFECV
+
+from sklearn.feature_selection import RFE
+
+import seaborn as sns
 
 resultados_dos_exames = pd.read_csv('exames.csv')
 
@@ -68,6 +81,22 @@ treino_x, teste_x, treino_y, teste_y = train_test_split(valores_exames_v6, diagn
 
 classificador = RandomForestClassifier(n_estimators=100, random_state = 1234)
 classificador.fit(treino_x, treino_y)
+
+# ALGORITMO COM RFE
+
+selecionador_rfe = RFE(estimator = classificador, n_features_to_select = 2, step = 1)
+selecionador_rfe.fit(treino_x, treino_y)
+treino_rfe = selecionador_rfe.transform(treino_x)
+teste_rfe = selecionador_rfe.transform(teste_x)
+classificador.fit(treino_rfe, treino_y)
+
+valores_exames_v7 = selecionador_rfe.transform(valores_exames_v6)
+valores_exames_v7.shape
+
+plt.figure(figsize=(14, 8))
+sns.scatterplot(x = valores_exames_v7[:,0], y = valores_exames_v7[:,1], hue = diagnostico)
+
+# ALGORITMO COM RFECV
 
 selecionador_rfecv = RFECV(estimator = classificador, step = 1, scoring='accuracy')
 selecionador_rfecv.fit(treino_x, treino_y)
