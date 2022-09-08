@@ -70,5 +70,3 @@ print("A acurácia foi %.2f%%" % acuracia)
 
 dot_data = export_graphviz(modelo, out_file=None)
 grafico = graphviz.Source(dot_data)
-
-print(graphviz.Source(dot_data))
